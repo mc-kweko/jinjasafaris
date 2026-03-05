@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { FaWhatsapp, FaInstagram, FaTwitter, FaTiktok, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function Footer() {
@@ -8,7 +9,16 @@ export default function Footer() {
     <footer className="bg-gradient-to-b from-safari-dark to-black text-white border-t-4 border-safari-sand">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div>
+          <div className="md:col-span-1">
+            <Link href="/" className="flex items-center space-x-3 mb-6 group">
+              <Image
+                src="/images/logo.png"
+                alt="Jinja Safaris Logo"
+                width={100}
+                height={100}
+                className="h-24 w-auto group-hover:scale-110 transition-transform duration-300"
+              />
+            </Link>
             <h3 className="text-3xl font-bold bg-gradient-to-r from-safari-sand to-safari-orange bg-clip-text text-transparent mb-4">Jinja Safaris</h3>
             <p className="text-safari-sand mb-4 text-lg">Hub of the Nile Tourism</p>
             <p className="text-sm text-gray-400">Trusted since 2014</p>

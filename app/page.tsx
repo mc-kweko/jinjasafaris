@@ -12,7 +12,7 @@ async function getHomeData() {
   const [slidesRes, activitiesRes, hotelsRes, testimonialsRes] = await Promise.all([
     supabase.from('slideshow_images').select('*').eq('is_active', true).order('order_index'),
     supabase.from('activities').select('*').eq('is_active', true).limit(5),
-    supabase.from('hotels').select('*').eq('is_active', true).limit(5),
+    supabase.from('hotels').select('*').eq('is_active', true),
     supabase.from('testimonials').select('*').eq('is_approved', true).eq('is_featured', true).limit(3),
   ]);
 
