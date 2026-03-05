@@ -11,6 +11,11 @@ export const metadata: Metadata = {
   title: 'Jinja Safaris - Hub of the Nile Tourism',
   description: 'Experience the best of Uganda with Jinja Safaris. White water rafting, skydiving, Nile tubing, trekking, and bird watching since 2014.',
   keywords: 'Jinja, Uganda, safaris, white water rafting, skydiving, Nile, tourism, adventure',
+  icons: {
+    icon: '/images/logo.png',
+    shortcut: '/images/logo.png',
+    apple: '/images/logo.png',
+  },
   openGraph: {
     title: 'Jinja Safaris - Hub of the Nile Tourism',
     description: 'Experience the best of Uganda with Jinja Safaris',
