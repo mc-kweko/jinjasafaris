@@ -2,15 +2,25 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 import { Testimonial } from '@/types';
 
 export default function AdminTestimonialsPage() {
+  const router = useRouter();
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [filter, setFilter] = useState('pending');
 
   useEffect(() => {
+    checkAuth();
     fetchTestimonials();
   }, [filter]);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.push('/admin');
+    }
+  };
 
   const fetchTestimonials = async () => {
     let query = supabase.from('testimonials').select('*').order('created_at', { ascending: false });

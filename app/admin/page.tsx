@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
@@ -16,17 +17,25 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError('');
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    setLoading(false);
-
-    if (error) {
-      setError(error.message);
-    } else {
-      router.push('/admin/dashboard');
+      if (error) {
+        console.error('Auth error:', error);
+        setError(error.message || 'Authentication failed. Please check your credentials.');
+      } else if (data.session) {
+        router.push('/admin/dashboard');
+      } else {
+        setError('Login failed. No session created.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(`Connection error: ${err instanceof Error ? err.message : 'Unknown error'}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,6 +81,13 @@ export default function AdminLoginPage() {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-gray-600 dark:text-gray-400">Don't have an admin account?</p>
+          <Link href="/admin/setup" className="text-blue-600 hover:text-blue-700 font-semibold">
+            Create one here
+          </Link>
+        </div>
       </div>
     </div>
   );

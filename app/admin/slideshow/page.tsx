@@ -2,15 +2,27 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 import { SlideshowImage } from '@/types';
 
 export default function AdminSlideshowPage() {
+  const router = useRouter();
   const [slides, setSlides] = useState<SlideshowImage[]>([]);
   const [newSlide, setNewSlide] = useState({ title: '', subtitle: '', image_url: '' });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
+    checkAuth();
     fetchSlides();
   }, []);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.push('/admin');
+    }
+  };
 
   const fetchSlides = async () => {
     const { data } = await supabase.from('slideshow_images').select('*').order('order_index');
@@ -18,19 +30,49 @@ export default function AdminSlideshowPage() {
   };
 
   const addSlide = async () => {
-    if (!newSlide.title || !newSlide.image_url) {
-      alert('Please fill in all fields');
+    if (!newSlide.title || (!selectedFile && !newSlide.image_url)) {
+      alert('Please fill in title and select a file or provide an image URL');
       return;
     }
 
+    setUploading(true);
+
+    let imageUrl = newSlide.image_url;
+
+    if (selectedFile) {
+      const fileExt = selectedFile.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `slideshow/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('slideshow')
+        .upload(filePath, selectedFile);
+
+      if (uploadError) {
+        alert('Error uploading file: ' + uploadError.message);
+        setUploading(false);
+        return;
+      }
+
+      const { data } = supabase.storage
+        .from('slideshow')
+        .getPublicUrl(filePath);
+
+      imageUrl = data.publicUrl;
+    }
+
     await supabase.from('slideshow_images').insert([{
-      ...newSlide,
+      title: newSlide.title,
+      subtitle: newSlide.subtitle,
+      image_url: imageUrl,
       order_index: slides.length,
       is_active: true,
     }]);
 
     setNewSlide({ title: '', subtitle: '', image_url: '' });
+    setSelectedFile(null);
     fetchSlides();
+    setUploading(false);
   };
 
   const toggleActive = async (id: string, isActive: boolean) => {
@@ -67,18 +109,28 @@ export default function AdminSlideshowPage() {
               onChange={(e) => setNewSlide({ ...newSlide, subtitle: e.target.value })}
               className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700"
             />
+            <div>
+              <label className="block text-sm font-medium mb-2">Upload Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700"
+              />
+            </div>
             <input
               type="text"
-              placeholder="Image URL (upload to Supabase Storage first)"
+              placeholder="Or enter Image URL (if not uploading file)"
               value={newSlide.image_url}
               onChange={(e) => setNewSlide({ ...newSlide, image_url: e.target.value })}
               className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700"
             />
             <button
               onClick={addSlide}
-              className="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition"
+              disabled={uploading}
+              className="bg-primary hover:bg-secondary disabled:opacity-50 text-white px-6 py-2 rounded-lg transition"
             >
-              Add Slide
+              {uploading ? 'Uploading...' : 'Add Slide'}
             </button>
           </div>
         </div>

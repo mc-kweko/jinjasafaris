@@ -2,17 +2,29 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 import { Hotel } from '@/types';
 
 export default function AdminHotelsPage() {
+  const router = useRouter();
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [editing, setEditing] = useState<string | null>(null);
   const [formData, setFormData] = useState<Partial<Hotel>>({});
   const [newHotel, setNewHotel] = useState({ name: '', description: '', image_url: '' });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
+    checkAuth();
     fetchHotels();
   }, []);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.push('/admin');
+    }
+  };
 
   const fetchHotels = async () => {
     const { data } = await supabase.from('hotels').select('*');
@@ -20,14 +32,48 @@ export default function AdminHotelsPage() {
   };
 
   const addHotel = async () => {
-    if (!newHotel.name || !newHotel.description) {
-      alert('Please fill in all required fields');
+    if (!newHotel.name || !newHotel.description || (!selectedFile && !newHotel.image_url)) {
+      alert('Please fill in all required fields and select a file or provide an image URL');
       return;
     }
 
-    await supabase.from('hotels').insert([{ ...newHotel, is_active: true }]);
+    setUploading(true);
+
+    let imageUrl = newHotel.image_url;
+
+    if (selectedFile) {
+      const fileExt = selectedFile.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `hotels/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('hotels')
+        .upload(filePath, selectedFile);
+
+      if (uploadError) {
+        alert('Error uploading file: ' + uploadError.message);
+        setUploading(false);
+        return;
+      }
+
+      const { data } = supabase.storage
+        .from('hotels')
+        .getPublicUrl(filePath);
+
+      imageUrl = data.publicUrl;
+    }
+
+    await supabase.from('hotels').insert([{
+      name: newHotel.name,
+      description: newHotel.description,
+      image_url: imageUrl,
+      is_active: true
+    }]);
+
     setNewHotel({ name: '', description: '', image_url: '' });
+    setSelectedFile(null);
     fetchHotels();
+    setUploading(false);
   };
 
   const handleEdit = (hotel: Hotel) => {
@@ -76,18 +122,28 @@ export default function AdminHotelsPage() {
               className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700"
               rows={3}
             />
+            <div>
+              <label className="block text-sm font-medium mb-2">Upload Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700"
+              />
+            </div>
             <input
               type="text"
-              placeholder="Image URL"
+              placeholder="Or enter Image URL (if not uploading file)"
               value={newHotel.image_url}
               onChange={(e) => setNewHotel({ ...newHotel, image_url: e.target.value })}
               className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700"
             />
             <button
               onClick={addHotel}
-              className="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition"
+              disabled={uploading}
+              className="bg-primary hover:bg-secondary disabled:opacity-50 text-white px-6 py-2 rounded-lg transition"
             >
-              Add Hotel
+              {uploading ? 'Uploading...' : 'Add Hotel'}
             </button>
           </div>
         </div>

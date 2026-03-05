@@ -2,16 +2,26 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 import { Activity } from '@/types';
 
 export default function AdminActivitiesPage() {
+  const router = useRouter();
   const [activities, setActivities] = useState<Activity[]>([]);
   const [editing, setEditing] = useState<string | null>(null);
   const [formData, setFormData] = useState<Partial<Activity>>({});
 
   useEffect(() => {
+    checkAuth();
     fetchActivities();
   }, []);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.push('/admin');
+    }
+  };
 
   const fetchActivities = async () => {
     const { data } = await supabase.from('activities').select('*');

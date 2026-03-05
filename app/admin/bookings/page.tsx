@@ -2,17 +2,27 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 import { Booking, Activity } from '@/types';
 import { formatDate, formatCurrency } from '@/utils/helpers';
 
 export default function AdminBookingsPage() {
+  const router = useRouter();
   const [bookings, setBookings] = useState<(Booking & { activity?: Activity })[]>([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    checkAuth();
     fetchBookings();
   }, [filter]);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.push('/admin');
+    }
+  };
 
   const fetchBookings = async () => {
     let query = supabase.from('bookings').select(`

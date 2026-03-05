@@ -13,6 +13,10 @@ The following images have been copied to `/public/images/` and are now web-acces
 | `logo.png` | `/public/images/logo.png` | Navigation bar branding |
 | `header-cranes.jpg` | `/public/images/header-cranes.jpg` | Hero slideshow (primary) |
 | `rafting.jpg` | `/public/images/rafting.jpg` | Activities & Slideshow |
+| `sky-diving.jpg` | `/public/images/sky-diving.jpg` | Skydiving activity |
+| `nile-tubing.jpg` | `/public/images/nile-tubing.jpg` | Nile tubing activity |
+| `jinja-trekking.jpg` | `/public/images/jinja-trekking.jpg` | Jinja trekking activity |
+| `bird-watching.jpg` | `/public/images/bird-watching.jpg` | Bird watching activity |
 | `lodge.jpg` | `/public/images/lodge.jpg` | Accommodations showcase |
 | `attractions.jpg` | `/public/images/attractions.jpg` | Hero slideshow |
 | `gallery-1.jpg` | `/public/images/gallery-1.jpg` | Gallery - Adventures |
@@ -67,6 +71,10 @@ If you already have the database set up:
 
 **Activities:**
 - White Water Rafting activity uses `rafting.jpg`
+- Skydiving activity uses `sky-diving.jpg`
+- Nile tubing activity uses `nile-tubing.jpg`
+- Jinja trekking activity uses `jinja-trekking.jpg`
+- Bird watching activity uses `bird-watching.jpg`
 
 ### 🚀 Next Steps
 

@@ -123,6 +123,10 @@ Upload your existing images to the appropriate Supabase Storage buckets:
 For the images in your folder:
 - `Jinja Safaris Logo.png` → Use in navbar/footer
 - `rafting-74.jpg` → White Water Rafting activity
+- `sky-diving.jpg` → Skydiving activity
+- `nile-tubing.jpg` → Nile Tubing activity
+- `jinja-trekking.jpg` or hiking photo → Jinja Trekking activity
+- `bird-watching.jpg` → Bird Watching activity
 - `wild_water_lodge_5.jpg` → Hotel image
 - Other images → Gallery or slideshow
 

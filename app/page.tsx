@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { supabase } from '@/lib/supabase';
 import HeroSlideshow from '@/components/HeroSlideshow';
 import ActivityCard from '@/components/ActivityCard';

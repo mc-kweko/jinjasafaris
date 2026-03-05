@@ -2,16 +2,28 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 import { GalleryImage } from '@/types';
 import Image from 'next/image';
 
 export default function AdminGalleryPage() {
+  const router = useRouter();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [newImage, setNewImage] = useState({ image_url: '', category: '', caption: '' });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
+    checkAuth();
     fetchImages();
   }, []);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.push('/admin');
+    }
+  };
 
   const fetchImages = async () => {
     const { data } = await supabase.from('gallery_images').select('*').order('created_at', { ascending: false });
@@ -19,14 +31,47 @@ export default function AdminGalleryPage() {
   };
 
   const addImage = async () => {
-    if (!newImage.image_url) {
-      alert('Please provide an image URL');
+    if (!selectedFile && !newImage.image_url) {
+      alert('Please select a file to upload or provide an image URL');
       return;
     }
 
-    await supabase.from('gallery_images').insert([newImage]);
+    setUploading(true);
+
+    let imageUrl = newImage.image_url;
+
+    if (selectedFile) {
+      const fileExt = selectedFile.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `gallery/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('gallery')
+        .upload(filePath, selectedFile);
+
+      if (uploadError) {
+        alert('Error uploading file: ' + uploadError.message);
+        setUploading(false);
+        return;
+      }
+
+      const { data } = supabase.storage
+        .from('gallery')
+        .getPublicUrl(filePath);
+
+      imageUrl = data.publicUrl;
+    }
+
+    await supabase.from('gallery_images').insert([{
+      image_url: imageUrl,
+      category: newImage.category,
+      caption: newImage.caption
+    }]);
+
     setNewImage({ image_url: '', category: '', caption: '' });
+    setSelectedFile(null);
     fetchImages();
+    setUploading(false);
   };
 
   const deleteImage = async (id: string) => {
@@ -44,9 +89,18 @@ export default function AdminGalleryPage() {
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
           <h2 className="text-xl font-bold mb-4">Add New Image</h2>
           <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Upload Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700"
+              />
+            </div>
             <input
               type="text"
-              placeholder="Image URL (upload to Supabase Storage first)"
+              placeholder="Or enter Image URL (if not uploading file)"
               value={newImage.image_url}
               onChange={(e) => setNewImage({ ...newImage, image_url: e.target.value })}
               className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700"
@@ -67,9 +121,10 @@ export default function AdminGalleryPage() {
             />
             <button
               onClick={addImage}
-              className="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition"
+              disabled={uploading}
+              className="bg-primary hover:bg-secondary disabled:opacity-50 text-white px-6 py-2 rounded-lg transition"
             >
-              Add Image
+              {uploading ? 'Uploading...' : 'Add Image'}
             </button>
           </div>
         </div>
