@@ -1,5 +1,17 @@
--- Public Read Policies for Frontend
--- Allows unauthenticated users to view data on the public website
+-- Public Read Policies for Frontend (Idempotent)
+-- Drop existing policies first, then recreate
+
+DROP POLICY IF EXISTS "Public can view active activities" ON activities;
+DROP POLICY IF EXISTS "Public can view hotels" ON hotels;
+DROP POLICY IF EXISTS "Public can view gallery" ON gallery_images;
+DROP POLICY IF EXISTS "Public can view slideshow" ON slideshow_images;
+DROP POLICY IF EXISTS "Public can view approved testimonials" ON testimonials;
+DROP POLICY IF EXISTS "Public can view published blogs" ON blog_posts;
+DROP POLICY IF EXISTS "Public can view contact info" ON contact_info;
+DROP POLICY IF EXISTS "Public can view pricing" ON seasonal_pricing;
+DROP POLICY IF EXISTS "Public can create bookings" ON bookings;
+DROP POLICY IF EXISTS "Public can subscribe to newsletter" ON newsletter;
+DROP POLICY IF EXISTS "Public can submit testimonials" ON testimonials;
 
 -- Activities: Public can view active activities
 CREATE POLICY "Public can view active activities" ON activities 
