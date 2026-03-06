@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Activity } from '@/types';
 import { formatCurrency, calculateDeposit, validateEmail, validatePhone } from '@/utils/helpers';
 import { useSearchParams } from 'next/navigation';
 
-export default function BookingPage() {
+function BookingForm() {
   const searchParams = useSearchParams();
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(false);
@@ -271,5 +271,13 @@ export default function BookingPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function BookingPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <BookingForm />
+    </Suspense>
   );
 }
