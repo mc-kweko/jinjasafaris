@@ -28,8 +28,25 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const siteUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://jinjasafaris.example.com';
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Jinja Safaris",
+    "url": siteUrl,
+    "logo": `${siteUrl}/images/logo.png`,
+    "sameAs": [
+      "https://instagram.com/jinjasafaris",
+      "https://twitter.com/jinjasafaris"
+    ]
+  };
   return (
     <html lang="en">
+      <head>
+        <link rel="canonical" href={siteUrl} />
+        <meta name="robots" content="index, follow" />
+        <script key="ld+json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      </head>
       <body className={inter.className}>
         <Navbar />
         <main className="min-h-screen pt-16">
