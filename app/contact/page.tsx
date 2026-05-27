@@ -1,5 +1,7 @@
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from 'next';
+
 import { supabase } from '@/lib/supabase';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp, FaInstagram, FaTwitter, FaTiktok } from 'react-icons/fa';
 
@@ -8,9 +10,22 @@ async function getContactInfo() {
   return data;
 }
 
-export const metadata = {
-  title: 'Contact Us - Jinja Safaris',
-  description: 'Get in touch with Jinja Safaris',
+export const metadata: Metadata = {
+  title: 'Contact Jinja Safaris',
+  description: 'Contact Jinja Safaris for bookings, support, WhatsApp, email, and location details in Jinja, Uganda.',
+  keywords: ['contact Jinja Safaris', 'Jinja Safaris phone', 'Jinja Safaris WhatsApp', 'Jinja Uganda contact'],
+  alternates: { canonical: '/contact' },
+  openGraph: {
+    title: 'Contact Jinja Safaris',
+    description: 'Contact details, WhatsApp, and map location for Jinja Safaris.',
+    url: '/contact',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact Jinja Safaris',
+    description: 'Contact details, WhatsApp, and map location for Jinja Safaris.',
+  },
 };
 
 export default async function ContactPage() {

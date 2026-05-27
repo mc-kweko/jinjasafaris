@@ -1,5 +1,7 @@
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from 'next';
+
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 
@@ -8,9 +10,22 @@ async function getHotels() {
   return data || [];
 }
 
-export const metadata = {
-  title: 'Partner Hotels - Jinja Safaris',
-  description: 'Comfortable accommodation options in Jinja',
+export const metadata: Metadata = {
+  title: 'Partner Hotels in Jinja',
+  description: 'Discover partner hotels and accommodation options for your Jinja Safari adventure.',
+  keywords: ['Jinja hotels', 'partner hotels Jinja', 'accommodation in Jinja', 'Nile resort'],
+  alternates: { canonical: '/hotels' },
+  openGraph: {
+    title: 'Partner Hotels in Jinja | Jinja Safaris',
+    description: 'Browse accommodation options near the Nile.',
+    url: '/hotels',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Partner Hotels in Jinja | Jinja Safaris',
+    description: 'Browse accommodation options near the Nile.',
+  },
 };
 
 export default async function HotelsPage() {

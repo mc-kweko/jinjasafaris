@@ -1,5 +1,7 @@
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from 'next';
+
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,9 +16,22 @@ async function getBlogPosts() {
   return data || [];
 }
 
-export const metadata = {
-  title: 'Blog - Jinja Safaris',
-  description: 'Travel tips, stories, and adventure guides',
+export const metadata: Metadata = {
+  title: 'Jinja Safaris Travel Blog',
+  description: 'Travel tips, adventure stories, destination guides, and tourism updates from Jinja Safaris.',
+  keywords: ['Jinja Safaris blog', 'Uganda travel tips', 'Jinja tourism blog', 'adventure guides'],
+  alternates: { canonical: '/blog' },
+  openGraph: {
+    title: 'Jinja Safaris Travel Blog',
+    description: 'Travel tips, adventure stories, destination guides, and tourism updates.',
+    url: '/blog',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Jinja Safaris Travel Blog',
+    description: 'Travel tips, adventure stories, destination guides, and tourism updates.',
+  },
 };
 
 export default async function BlogPage() {

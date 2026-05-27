@@ -1,5 +1,7 @@
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from 'next';
+
 import { supabase } from '@/lib/supabase';
 import HeroSlideshow from '@/components/HeroSlideshow';
 import ActivityCard from '@/components/ActivityCard';
@@ -7,6 +9,25 @@ import NewsletterForm from '@/components/NewsletterForm';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaShieldAlt, FaCertificate, FaUsers, FaLock } from 'react-icons/fa';
+
+export const metadata: Metadata = {
+  title: 'Jinja Safaris - Hub of the Nile Tourism',
+  description: 'Jinja Safaris is a tourism and adventure company in Jinja, Uganda offering white water rafting, skydiving, Nile tubing, trekking, bird watching, hotels, and bookings.',
+  keywords: ['Jinja Safaris', 'Jinja Uganda tourism', 'white water rafting', 'skydiving Uganda', 'Nile tubing', 'Jinja adventure tours'],
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: 'Jinja Safaris - Hub of the Nile Tourism',
+    description: 'Adventure bookings, partner hotels, gallery, and travel experiences in Jinja, Uganda.',
+    url: '/',
+    type: 'website',
+    siteName: 'Jinja Safaris',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Jinja Safaris - Hub of the Nile Tourism',
+    description: 'Adventure bookings, partner hotels, gallery, and travel experiences in Jinja, Uganda.',
+  },
+};
 
 async function getHomeData() {
   const [slidesRes, activitiesRes, hotelsRes, testimonialsRes] = await Promise.all([

@@ -1,5 +1,7 @@
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from 'next';
+
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 
@@ -8,9 +10,22 @@ async function getGalleryImages() {
   return data || [];
 }
 
-export const metadata = {
-  title: 'Gallery - Jinja Safaris',
-  description: 'View photos from our adventures',
+export const metadata: Metadata = {
+  title: 'Photo Gallery of Jinja Safaris Adventures',
+  description: 'View photos from Jinja Safaris adventures, activities, landscapes, and accommodation experiences.',
+  keywords: ['Jinja Safaris gallery', 'Jinja adventure photos', 'Uganda tourism gallery'],
+  alternates: { canonical: '/gallery' },
+  openGraph: {
+    title: 'Photo Gallery of Jinja Safaris Adventures',
+    description: 'Browse adventure and tourism photos from Jinja, Uganda.',
+    url: '/gallery',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Photo Gallery of Jinja Safaris Adventures',
+    description: 'Browse adventure and tourism photos from Jinja, Uganda.',
+  },
 };
 
 export default async function GalleryPage() {

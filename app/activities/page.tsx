@@ -1,5 +1,7 @@
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from 'next';
+
 import { supabase } from '@/lib/supabase';
 import ActivityCard from '@/components/ActivityCard';
 
@@ -8,9 +10,22 @@ async function getActivities() {
   return data || [];
 }
 
-export const metadata = {
-  title: 'Activities - Jinja Safaris',
-  description: 'Explore our exciting adventure activities in Jinja, Uganda',
+export const metadata: Metadata = {
+  title: 'Activities in Jinja, Uganda',
+  description: 'Explore Jinja Safaris activities including white water rafting, skydiving, Nile tubing, trekking, and bird watching.',
+  keywords: ['activities in Jinja', 'white water rafting Jinja', 'skydiving Uganda', 'Nile tubing', 'bird watching Uganda'],
+  alternates: { canonical: '/activities' },
+  openGraph: {
+    title: 'Activities in Jinja, Uganda | Jinja Safaris',
+    description: 'Browse adventure activities and book your Nile experience.',
+    url: '/activities',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Activities in Jinja, Uganda | Jinja Safaris',
+    description: 'Browse adventure activities and book your Nile experience.',
+  },
 };
 
 export default async function ActivitiesPage() {
