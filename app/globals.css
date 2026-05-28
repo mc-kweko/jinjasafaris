@@ -5,8 +5,16 @@
 @layer base {
   body {
     @apply bg-safari-cream dark:bg-safari-dark text-gray-900 dark:text-gray-100;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
+  img, picture, video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
 
 @layer components {
   .safari-card {

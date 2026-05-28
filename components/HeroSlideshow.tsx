@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 interface Slide {
@@ -31,7 +32,7 @@ export default function HeroSlideshow({ slides }: HeroSlideshowProps) {
 
   if (!slides.length) {
     return (
-      <div className="relative h-[600px] bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+      <div className="relative h-[60vh] md:h-[600px] bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
         <div className="text-center text-white px-4">
           <h1 className="text-5xl md:text-7xl font-bold mb-4">Jinja Safaris</h1>
           <p className="text-xl md:text-2xl mb-8">Hub of the Nile Tourism</p>
@@ -49,7 +50,7 @@ export default function HeroSlideshow({ slides }: HeroSlideshowProps) {
   }
 
   return (
-    <div className="relative h-[600px] overflow-hidden">
+    <div className="relative h-[60vh] md:h-[600px] overflow-hidden">
       {slides.map((slide, index) => (
         <div
           key={slide.id}
@@ -57,10 +58,15 @@ export default function HeroSlideshow({ slides }: HeroSlideshowProps) {
             index === current ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <div
-            className="w-full h-full bg-cover bg-center"
-            style={{ backgroundImage: `url(${slide.image_url})` }}
-          >
+          <div className="w-full h-full relative">
+            <Image
+              src={slide.image_url}
+              alt={slide.title}
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority={index === current}
+            />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <div className="text-center text-white px-4 animate-fade-in">
                 <h1 className="text-5xl md:text-7xl font-bold mb-4">{slide.title}</h1>
