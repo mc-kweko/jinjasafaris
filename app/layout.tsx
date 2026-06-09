@@ -85,8 +85,8 @@ export default function RootLayout({
     "url": siteUrl,
     "logo": `${siteUrl}/images/logo.png`,
     "image": `${siteUrl}/images/logo.png`,
-    "telephone": "+256123456789",
-    "email": "info@jinjasafaris.com",
+    "telephone": "+256700607221",
+    "email": "jinjasafaris@gmail.com",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Rubaga Hill",
@@ -109,7 +109,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <Navbar />
-        <main className="min-h-screen pt-16">
+        <main className="min-h-screen pt-16 sm:pt-20">
           {children}
         </main>
         <Footer />

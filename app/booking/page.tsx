@@ -12,7 +12,7 @@ function BookingForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [currency, setCurrency] = useState<'USD' | 'UGX'>('USD');
-  
+
   const [formData, setFormData] = useState({
     activity_id: searchParams.get('activity') || '',
     customer_name: '',
@@ -35,7 +35,7 @@ function BookingForm() {
   };
 
   const selectedActivity = activities.find(a => a.id === formData.activity_id);
-  const pricePerPerson = selectedActivity 
+  const pricePerPerson = selectedActivity
     ? (formData.is_local ? selectedActivity.base_price_local : selectedActivity.base_price_international)
     : 0;
   const totalPrice = pricePerPerson * formData.number_of_people;
@@ -43,12 +43,12 @@ function BookingForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateEmail(formData.customer_email)) {
       alert('Please enter a valid email');
       return;
     }
-    
+
     if (!validatePhone(formData.customer_phone)) {
       alert('Please enter a valid phone number');
       return;
@@ -87,15 +87,15 @@ function BookingForm() {
   if (success) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg max-w-md text-center">
-          <div className="text-green-500 text-6xl mb-4">✓</div>
-          <h2 className="text-2xl font-bold mb-4">Booking Successful!</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">
+        <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-md text-center">
+          <div className="text-green-500 text-5xl sm:text-6xl mb-4">✓</div>
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Booking Successful!</h2>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-5 sm:mb-6">
             Thank you for your booking. We&apos;ll send you a confirmation email shortly.
           </p>
           <button
             onClick={() => setSuccess(false)}
-            className="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-full transition"
+            className="bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-full transition text-sm sm:text-base"
           >
             Make Another Booking
           </button>
@@ -105,27 +105,27 @@ function BookingForm() {
   }
 
   return (
-    <div className="py-16 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 text-center">Book Your Adventure</h1>
+    <div className="py-12 sm:py-16 px-4">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-center">Book Your Adventure</h1>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-          <div className="mb-6 flex justify-end">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-5 sm:p-8">
+          <div className="mb-5 sm:mb-6 flex justify-end">
             <button
               onClick={() => setCurrency(currency === 'USD' ? 'UGX' : 'USD')}
-              className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg"
+              className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm font-medium"
             >
               Currency: {currency}
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
             <div>
-              <label className="block mb-2 font-semibold">Select Activity *</label>
+              <label className="block mb-2 font-semibold text-sm sm:text-base">Select Activity *</label>
               <select
                 value={formData.activity_id}
                 onChange={(e) => setFormData({ ...formData, activity_id: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                className="w-full px-3 sm:px-4 py-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base"
                 required
               >
                 <option value="">Choose an activity</option>
@@ -140,102 +140,102 @@ function BookingForm() {
               </select>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label className="block mb-2 font-semibold">Full Name *</label>
+                <label className="block mb-2 font-semibold text-sm sm:text-base">Full Name *</label>
                 <input
                   type="text"
                   value={formData.customer_name}
                   onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="w-full px-3 sm:px-4 py-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base"
                   required
                 />
               </div>
 
               <div>
-                <label className="block mb-2 font-semibold">Email *</label>
+                <label className="block mb-2 font-semibold text-sm sm:text-base">Email *</label>
                 <input
                   type="email"
                   value={formData.customer_email}
                   onChange={(e) => setFormData({ ...formData, customer_email: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="w-full px-3 sm:px-4 py-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base"
                   required
                 />
               </div>
 
               <div>
-                <label className="block mb-2 font-semibold">Phone *</label>
+                <label className="block mb-2 font-semibold text-sm sm:text-base">Phone *</label>
                 <input
                   type="tel"
                   value={formData.customer_phone}
                   onChange={(e) => setFormData({ ...formData, customer_phone: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="w-full px-3 sm:px-4 py-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base"
                   required
                 />
               </div>
 
               <div>
-                <label className="block mb-2 font-semibold">Nationality *</label>
+                <label className="block mb-2 font-semibold text-sm sm:text-base">Nationality *</label>
                 <input
                   type="text"
                   value={formData.nationality}
                   onChange={(e) => setFormData({ ...formData, nationality: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="w-full px-3 sm:px-4 py-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base"
                   required
                 />
               </div>
 
               <div>
-                <label className="block mb-2 font-semibold">Booking Date *</label>
+                <label className="block mb-2 font-semibold text-sm sm:text-base">Booking Date *</label>
                 <input
                   type="date"
                   value={formData.booking_date}
                   onChange={(e) => setFormData({ ...formData, booking_date: e.target.value })}
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="w-full px-3 sm:px-4 py-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base"
                   required
                 />
               </div>
 
               <div>
-                <label className="block mb-2 font-semibold">Number of People *</label>
+                <label className="block mb-2 font-semibold text-sm sm:text-base">Number of People *</label>
                 <input
                   type="number"
                   min="1"
                   value={formData.number_of_people}
                   onChange={(e) => setFormData({ ...formData, number_of_people: parseInt(e.target.value) })}
-                  className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="w-full px-3 sm:px-4 py-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={formData.is_local}
                   onChange={(e) => setFormData({ ...formData, is_local: e.target.checked })}
-                  className="w-5 h-5"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                 />
-                <span className="font-semibold">I am a local tourist (Ugandan resident)</span>
+                <span className="font-semibold text-sm sm:text-base">I am a local tourist (Ugandan resident)</span>
               </label>
             </div>
 
             <div>
-              <label className="block mb-2 font-semibold">Special Requests</label>
+              <label className="block mb-2 font-semibold text-sm sm:text-base">Special Requests</label>
               <textarea
                 value={formData.special_requests}
                 onChange={(e) => setFormData({ ...formData, special_requests: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                className="w-full px-3 sm:px-4 py-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base"
                 rows={4}
               />
             </div>
 
             {selectedActivity && (
-              <div className="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg">
-                <h3 className="text-xl font-bold mb-4">Booking Summary</h3>
-                <div className="space-y-2">
+              <div className="bg-gray-100 dark:bg-gray-700 p-4 sm:p-6 rounded-lg">
+                <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Booking Summary</h3>
+                <div className="space-y-2 text-sm sm:text-base">
                   <div className="flex justify-between">
                     <span>Activity:</span>
                     <span className="font-semibold">{selectedActivity.name}</span>
@@ -248,7 +248,7 @@ function BookingForm() {
                     <span>Number of people:</span>
                     <span className="font-semibold">{formData.number_of_people}</span>
                   </div>
-                  <div className="flex justify-between text-lg font-bold border-t pt-2">
+                  <div className="flex justify-between text-base sm:text-lg font-bold border-t pt-2">
                     <span>Total Price:</span>
                     <span>{formatCurrency(totalPrice, currency)}</span>
                   </div>
@@ -263,7 +263,7 @@ function BookingForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary hover:bg-secondary text-white py-3 rounded-full text-lg font-semibold transition disabled:opacity-50"
+              className="w-full bg-primary hover:bg-secondary text-white py-3 rounded-full text-base sm:text-lg font-semibold transition disabled:opacity-50"
             >
               {loading ? 'Processing...' : 'Confirm Booking'}
             </button>

@@ -3,34 +3,45 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-safari-cream dark:bg-safari-dark text-gray-900 dark:text-gray-100;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
-}
   img, picture, video {
     max-width: 100%;
     height: auto;
     display: block;
   }
-
+}
 
 @layer components {
   .safari-card {
     @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-safari-sand/20;
   }
-  
+
   .safari-btn {
-    @apply bg-gradient-to-r from-safari-orange to-safari-sand text-white px-8 py-3 rounded-full font-semibold hover:scale-105 transition-transform duration-300 shadow-lg;
+    @apply bg-gradient-to-r from-safari-orange to-safari-sand text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold hover:scale-105 transition-transform duration-300 shadow-lg;
   }
-  
+
   .safari-btn-secondary {
-    @apply bg-safari-brown text-white px-8 py-3 rounded-full font-semibold hover:bg-safari-green transition-colors duration-300 shadow-md;
+    @apply bg-safari-brown text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold hover:bg-safari-green transition-colors duration-300 shadow-md;
   }
-  
+
   .safari-heading {
-    @apply text-4xl md:text-5xl font-bold bg-gradient-to-r from-safari-brown to-safari-orange bg-clip-text text-transparent;
+    @apply text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-safari-brown to-safari-orange bg-clip-text text-transparent;
+  }
+
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-12 sm:py-16 md:py-20;
   }
 }
 
@@ -38,33 +49,23 @@
   .animate-fade-in {
     animation: fadeIn 0.5s ease-in;
   }
-  
+
   .animate-slide-up {
     animation: slideUp 0.6s ease-out;
   }
-  
+
   .safari-pattern {
-    background-image: 
+    background-image:
       repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(212, 165, 116, 0.05) 35px, rgba(212, 165, 116, 0.05) 70px);
   }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
